@@ -7,7 +7,7 @@ public class RoomSeeder
 {
     public static void Seed(ModelBuilder modelBuilder)
     {
-        var Rooms = GenerateRooms(100);
+        var Rooms = GenerateRooms(50);
         modelBuilder.Entity<Room>().HasData(Rooms);
     }
 
@@ -19,7 +19,7 @@ public class RoomSeeder
         
         var faker = new Faker<Room>()
                 .RuleFor(s=> s.Room_id,f =>id ++)
-                .RuleFor(s => s.Room_number, f => f.Random.Int(1, 100).ToString())     
+                .RuleFor(s => s.Room_number, f => id.ToString())     
                 .RuleFor(s => s.Room_type_id, f => f.Random.Int(1, 4))
                 .RuleFor(s => s.Room_price_per_night, (f, s) => 
                 {

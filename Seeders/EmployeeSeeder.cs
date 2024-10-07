@@ -7,7 +7,7 @@ public class Employeeseeder
 {
     public static void Seed(ModelBuilder modelBuilder)
     {
-        var Employees = GenerateEmployees(100);
+        var Employees = GenerateEmployees(5);
         modelBuilder.Entity<Employee>().HasData(Employees);
     }
 

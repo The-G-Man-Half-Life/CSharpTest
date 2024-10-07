@@ -8,8 +8,9 @@ public class ApplicationDbContext: DbContext
 {
     public DbSet<Guest> Guests {get; set;}
     public DbSet<Room_type> Room_Types {get; set;}
-    public DbSet<Room> Rooms {get; set;}
     public DbSet<Employee> Employees {get; set;}
+    public DbSet<Room> Rooms {get; set;}
+    public DbSet<Booking> Bookings {get; set;}
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
@@ -20,6 +21,5 @@ public class ApplicationDbContext: DbContext
         GuestSeeder.Seed(modelBuilder);
         Employeeseeder.Seed(modelBuilder);
         RoomSeeder.Seed(modelBuilder);
-
     }
 }

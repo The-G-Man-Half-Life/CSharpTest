@@ -28,6 +28,8 @@ builder.Services.AddScoped<IRoomRepository, RoomServices>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeServices>();
 builder.Services.AddScoped<EmployeeServices>();
+builder.Services.AddScoped<IBookingRepository, BookingServices>();
+builder.Services.AddScoped<BookingServices>();
 
 
 builder.Services.AddControllers();
