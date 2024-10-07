@@ -26,6 +26,8 @@ builder.Services.AddScoped<IRoom_typeRepository, Room_typeServices>();
 builder.Services.AddScoped<Room_typeServices>();
 builder.Services.AddScoped<IRoomRepository, RoomServices>();
 builder.Services.AddScoped<RoomServices>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeServices>();
+builder.Services.AddScoped<EmployeeServices>();
 
 
 builder.Services.AddControllers();
