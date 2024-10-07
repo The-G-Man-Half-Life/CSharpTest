@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Models;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.EntityFrameworkCore; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Guests;
 
@@ -60,4 +61,46 @@ public class GuestGetController : GuestController
             return Ok(Guest);
         }
     }
+
+
+/// <summary>
+/// Obtiene un invitado por palabra clave.
+/// </summary>
+/// <param name="key">La palabra clave para buscar.</param>
+/// <returns>Lista de reservas que coinciden con la palabra clave.</returns>
+/// <response code="200">Devuelve la lista de reservas encontradas.</response>
+/// <response code="404">Si no se encuentran reservas.</response>
+/// <response code="500">Si ocurre un error durante el proceso.</response>
+[HttpGet("GetFromKeyWord/{key}")]
+[SwaggerOperation(Summary = "Obtiene una reserva por palabra clave", Description = "Devuelve la lista de reservas correspondientes a la palabra clave proporcionada.")]
+[SwaggerResponse(200, "Reservas encontradas.")]
+[SwaggerResponse(404, "No se encontraron reservas.")]
+[SwaggerResponse(500, "Un error ocurrió durante el proceso.")]
+public async Task<ActionResult<List<Guest>>> GetBookingByKeyWord([FromRoute] string key)
+{
+    var guests = await GuestServices.GetAll();
+    
+    // Filtrar invitados por palabra clave
+    var foundGuests = guests.Where(g => g.Guest_first_name.Contains(key) ||
+                                        g.Guest_last_name.Contains(key) ||
+                                        g.Guest_email.Contains(key) ||
+                                        g.Guest_identification_number.Contains(key) ||
+                                        g.Guest_phone_number.Contains(key)).ToList();
+    
+    if (!foundGuests.Any())
+    {
+        return NotFound();
+    }
+
+    try
+    {
+        return Ok(foundGuests.Distinct().ToList()); // Eliminar duplicados si es necesario
+    }
+    catch (DbUpdateException)
+    {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Un error ocurrió durante el proceso.");
+    }
 }
+
+}
+

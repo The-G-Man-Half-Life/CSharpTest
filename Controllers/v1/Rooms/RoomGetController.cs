@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.VisualBasic; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Rooms
 {
@@ -66,6 +67,84 @@ namespace CSharpTest.Controllers.v1.Rooms
             {
                 var foundRoom = await RoomServices.GetById(id);
                 return Ok(foundRoom);
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Un error ocurrió durante el proceso");
+            }
+        }
+
+        /// <summary>
+        /// Obtiene todas las habitaciones libres.
+        /// </summary>
+        /// <returns>Lista de habitaciones libres.</returns>
+        /// <response code="200">Operación exitosa.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpGet("/FreeRooms")]
+        [SwaggerOperation(Summary = "Obtiene todas las habitaciones que estan libres", Description = "Devuelve una lista de todas las habitaciones disponibles.")]
+        [SwaggerResponse(200, "Operación exitosa.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
+        public async Task<ActionResult<IEnumerable<Room>>> GetAllFreeRooms()
+        {
+            try
+            {
+                var Rooms = await RoomServices.GetAll();
+                var FreeRooms = Rooms.Where(r=>r.Room_availability==true);
+                return Ok(Rooms);
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Un error ocurrió durante el proceso");
+            }
+        }
+
+        /// <summary>
+        /// Obtiene todas las habitaciones.
+        /// </summary>
+        /// <returns>Lista de habitaciones.</returns>
+        /// <response code="200">Operación exitosa.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpGet("/FreeOccupiedRooms")]
+        [SwaggerOperation(Summary = "Obtiene una cuenta de todas las habitaciones ocupadas y libres", Description = "Devuelve una lista indicando el total de habitaciones libres y ocupadas")]
+        [SwaggerResponse(200, "Operación exitosa.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
+        public async Task<ActionResult<IEnumerable<Object>>> ListOfFreeBusyRooms()
+        {
+            try
+            {
+                var Rooms = await RoomServices.GetAll();
+                var totalFreeRooms = Rooms.Count(r=>r.Room_availability == true);
+                var totalOccupiedRooms = Rooms.Count(r=>r.Room_availability == false);
+                var BusyFreeRooms = Rooms
+                .Select(s=> new {
+                    occupied = totalOccupiedRooms,
+                    free = totalFreeRooms
+                });
+                return Ok(BusyFreeRooms.First());
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Un error ocurrió durante el proceso");
+            }
+        }
+
+                /// <summary>
+        /// Obtiene todas las habitaciones ocupadas.
+        /// </summary>
+        /// <returns>Lista de habitaciones.</returns>
+        /// <response code="200">Operación exitosa.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpGet("/OccupiedRooms")]
+        [SwaggerOperation(Summary = "Obtiene una cuenta de todas las habitaciones ocupadas", Description = "Devuelve una lista con las habitaciones ocupadas")]
+        [SwaggerResponse(200, "Operación exitosa.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
+        public async Task<ActionResult<IEnumerable<Object>>> ListOfBusyRooms()
+        {
+            try
+            {
+                var Rooms = await RoomServices.GetAll();
+                var OccupiedRooms = Rooms.Where(r=>r.Room_availability==false).ToList();
+                return Ok(OccupiedRooms);
             }
             catch (DbUpdateException)
             {

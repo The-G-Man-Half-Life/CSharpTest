@@ -14,10 +14,12 @@ namespace CSharpTest.Controllers.v1.Bookings
     public class BookingGetController : BookingController
     {
         private readonly BookingServices BookingServices;
+        private readonly GuestServices GuestServices;
 
-        public BookingGetController(BookingServices BookingServices) : base(BookingServices)
+        public BookingGetController(BookingServices BookingServices, GuestServices GuestServices) : base(BookingServices)
         {
             this.BookingServices = BookingServices;
+            this.GuestServices = GuestServices;
         }
 
         /// <summary>
@@ -66,6 +68,40 @@ namespace CSharpTest.Controllers.v1.Bookings
             {
                 var foundBooking = await BookingServices.GetById(id);
                 return Ok(foundBooking);
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Un error ocurrió durante el proceso");
+            }
+        }
+
+
+        /// <summary>
+        /// Obtiene todas las reservas por su identification number.
+        /// </summary>
+        /// <param name="id">El numero de id de la reserva a obtener.</param>
+        /// <returns>La reserva correspondiente al numero de id proporcionado.</returns>
+        /// <response code="200">Devuelve la reserva encontrada.</response>
+        /// <response code="404">Si la reserva no existe.</response>
+        /// <response code="500">Si ocurre un error durante el proceso.</response>
+        [HttpGet("GetFromIdentificationNumber/{IN}")]
+        [SwaggerOperation(Summary = "Obtiene una reserva por ID", Description = "Devuelve la reserva correspondiente al ID proporcionado.")]
+        [SwaggerResponse(200, "Reserva encontrada.", typeof(BookingDTO))]
+        [SwaggerResponse(404, "Reserva no encontrada.")]
+        [SwaggerResponse(500, "Un error ocurrió durante el proceso.")]
+        public async Task<ActionResult<BookingDTO>> GetBookingById([FromRoute] string IN)
+        {
+            var Guests = await GuestServices.GetAll();
+            int FoundIN = Guests.FirstOrDefault(g=>g.Guest_identification_number == IN).Guest_id;
+            if (FoundIN == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var Bookings = await BookingServices.GetAll();
+                var BookingsByIN = Bookings.Where(b=>b.Booking_guest_id==FoundIN);
+                return Ok(BookingsByIN);
             }
             catch (DbUpdateException)
             {
