@@ -5,6 +5,7 @@ using CSharpTest.Data;
 using CSharpTest.Repositories.Interfaces;
 using CSharpTest.Services;
 
+//https://github.com/The-G-Man-Half-Life/CSharpTest
 Env.Load();
 
 var host = Environment.GetEnvironmentVariable("DB_HOST");
