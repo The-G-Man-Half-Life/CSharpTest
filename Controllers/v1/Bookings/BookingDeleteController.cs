@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CSharpTest.Repositories.Interfaces;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Bookings;
 
@@ -27,6 +28,7 @@ public class BookingDeleteController : BookingController
     /// <response code="200">Reserva eliminada exitosamente.</response>
     /// <response code="400">Si la reserva no existe.</response>
     [HttpDelete("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Elimina una reserva existente", Description = "Permite eliminar una reserva por su ID.")]
     [SwaggerResponse(200, "Reserva eliminada exitosamente.")]
     [SwaggerResponse(400, "La reserva no existe.")]

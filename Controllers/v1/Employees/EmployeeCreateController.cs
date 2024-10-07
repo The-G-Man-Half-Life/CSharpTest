@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Employees;
 
@@ -27,6 +28,7 @@ public class EmployeeCreateController : EmployeeController
     /// <response code="200">Devuelve el empleado creado.</response>
     /// <response code="400">Si el modelo es nulo o inválido.</response>
     [HttpPost]
+    [Authorize]
     [SwaggerOperation(Summary = "Crea un nuevo empleado", Description = "Permite al usuario crear un nuevo empleado.")]
     [SwaggerResponse(200, "Empleado creado exitosamente", typeof(Employee))]
     [SwaggerResponse(400, "El modelo no puede ser nulo o es inválido.")]

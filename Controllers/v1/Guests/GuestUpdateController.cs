@@ -5,7 +5,8 @@ using CSharpTest.Models;
 using CSharpTest.Repositories.Interfaces;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Guests;
 
@@ -31,6 +32,7 @@ public class GuestUpdateController : GuestController
     /// <response code="200">Huésped actualizado exitosamente.</response>
     /// <response code="404">Si el huésped no existe o si el modelo no es válido.</response>
     [HttpPut("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Actualiza un huésped existente", Description = "Permite actualizar un huésped por su ID.")]
     [SwaggerResponse(200, "Huésped actualizado exitosamente.")]
     [SwaggerResponse(404, "No se encontró el huésped o el modelo no es válido.")]

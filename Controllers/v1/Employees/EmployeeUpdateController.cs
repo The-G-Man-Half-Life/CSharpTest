@@ -5,7 +5,8 @@ using CSharpTest.Models;
 using CSharpTest.Repositories.Interfaces;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Employees;
 
@@ -31,6 +32,7 @@ public class EmployeeUpdateController : EmployeeController
     /// <response code="200">Empleado actualizado exitosamente.</response>
     /// <response code="404">Si el empleado no existe o si el modelo no es válido.</response>
     [HttpPut("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Actualiza un empleado existente", Description = "Permite actualizar un empleado por su ID.")]
     [SwaggerResponse(200, "Empleado actualizado exitosamente.")]
     [SwaggerResponse(404, "No se encontró al empleado o el modelo no es válido.")]

@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.DTOs.Requests;
 using CSharpTest.Models;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Rooms
 {
@@ -30,6 +31,7 @@ namespace CSharpTest.Controllers.v1.Rooms
         /// <response code="404">La habitación no fue encontrada.</response>
         /// <response code="400">El modelo no es válido.</response>
         [HttpPut("{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Actualiza los detalles de una habitación", Description = "Devuelve los detalles de la habitación actualizada.")]
         [SwaggerResponse(200, "Actualización exitosa.")]
         [SwaggerResponse(404, "La habitación no fue encontrada.")]

@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Bookings
 {
@@ -29,6 +30,7 @@ namespace CSharpTest.Controllers.v1.Bookings
         /// <response code="200">Devuelve una lista de reservas.</response>
         /// <response code="500">Si ocurre un error durante el proceso.</response>
         [HttpGet]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene todas las reservas", Description = "Devuelve una lista de todas las reservas.")]
         [SwaggerResponse(200, "Lista de reservas obtenida exitosamente.", typeof(IEnumerable<Booking>))]
         [SwaggerResponse(500, "Un error ocurrió durante el proceso.")]
@@ -54,6 +56,7 @@ namespace CSharpTest.Controllers.v1.Bookings
         /// <response code="404">Si la reserva no existe.</response>
         /// <response code="500">Si ocurre un error durante el proceso.</response>
         [HttpGet("{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene una reserva por ID", Description = "Devuelve la reserva correspondiente al ID proporcionado.")]
         [SwaggerResponse(200, "Reserva encontrada.", typeof(BookingDTO))]
         [SwaggerResponse(404, "Reserva no encontrada.")]
@@ -85,6 +88,7 @@ namespace CSharpTest.Controllers.v1.Bookings
         /// <response code="404">Si la reserva no existe.</response>
         /// <response code="500">Si ocurre un error durante el proceso.</response>
         [HttpGet("GetFromIdentificationNumber/{IN}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene una reserva por ID", Description = "Devuelve la reserva correspondiente al ID proporcionado.")]
         [SwaggerResponse(200, "Reserva encontrada.", typeof(BookingDTO))]
         [SwaggerResponse(404, "Reserva no encontrada.")]

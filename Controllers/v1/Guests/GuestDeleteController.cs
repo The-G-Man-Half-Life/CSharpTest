@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Guests
 {
@@ -29,6 +30,7 @@ namespace CSharpTest.Controllers.v1.Guests
         /// <response code="200">Huésped eliminado exitosamente.</response>
         /// <response code="204">Si el huésped no existe.</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Elimina un huésped existente", Description = "Permite eliminar un huésped por su ID.")]
         [SwaggerResponse(200, "Huésped eliminado exitosamente.")]
         [SwaggerResponse(204, "No se encontró el huésped.")]

@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.EntityFrameworkCore; // Asegúrate de tener esta referencia
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Guests;
 
@@ -30,6 +31,7 @@ public class GuestGetController : GuestController
     /// <returns>Una lista de todos los huéspedes.</returns>
     /// <response code="200">Devuelve una lista de huéspedes.</response>
     [HttpGet]
+    [Authorize]
     [SwaggerOperation(Summary = "Obtiene todos los huéspedes", Description = "Devuelve una lista de todos los huéspedes.")]
     [SwaggerResponse(200, "Lista de huéspedes obtenida exitosamente.", typeof(IEnumerable<Guest>))]
     public async Task<ActionResult<IEnumerable<Guest>>> GetAll()
@@ -46,6 +48,7 @@ public class GuestGetController : GuestController
     /// <response code="200">Devuelve el huésped encontrado.</response>
     /// <response code="204">Si el huésped no existe.</response>
     [HttpGet("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Obtiene un huésped por ID", Description = "Devuelve el huésped correspondiente al ID proporcionado.")]
     [SwaggerResponse(200, "Huésped encontrado.", typeof(Guest))]
     [SwaggerResponse(204, "Huésped no encontrado.")]
@@ -72,6 +75,7 @@ public class GuestGetController : GuestController
 /// <response code="404">Si no se encuentran reservas.</response>
 /// <response code="500">Si ocurre un error durante el proceso.</response>
 [HttpGet("GetFromKeyWord/{key}")]
+[Authorize]
 [SwaggerOperation(Summary = "Obtiene una reserva por palabra clave", Description = "Devuelve la lista de reservas correspondientes a la palabra clave proporcionada.")]
 [SwaggerResponse(200, "Reservas encontradas.")]
 [SwaggerResponse(404, "No se encontraron reservas.")]

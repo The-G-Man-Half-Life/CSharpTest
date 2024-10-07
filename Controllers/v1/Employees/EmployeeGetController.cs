@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Models;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Employees;
 
@@ -29,6 +30,7 @@ public class EmployeeGetController : EmployeeController
     /// <returns>Una lista de todos los empleados.</returns>
     /// <response code="200">Devuelve una lista de empleados.</response>
     [HttpGet]
+    [Authorize]
     [SwaggerOperation(Summary = "Obtiene todos los empleados", Description = "Devuelve una lista de todos los empleados.")]
     [SwaggerResponse(200, "Lista de empleados obtenida exitosamente.", typeof(IEnumerable<Employee>))]
     public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
@@ -45,6 +47,7 @@ public class EmployeeGetController : EmployeeController
     /// <response code="200">Devuelve el empleado encontrado.</response>
     /// <response code="204">Si el empleado no existe.</response>
     [HttpGet("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Obtiene un empleado por ID", Description = "Devuelve el empleado correspondiente al ID proporcionado.")]
     [SwaggerResponse(200, "Empleado encontrado.", typeof(Employee))]
     [SwaggerResponse(204, "Empleado no encontrado.")]

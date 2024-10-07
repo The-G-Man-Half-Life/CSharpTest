@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Employees
 {
@@ -29,6 +30,7 @@ namespace CSharpTest.Controllers.v1.Employees
         /// <response code="200">Empleado eliminado exitosamente.</response>
         /// <response code="204">Si el empleado no existe.</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Elimina un empleado existente", Description = "Permite eliminar un empleado por su ID.")]
         [SwaggerResponse(200, "Empleado eliminado exitosamente.")]
         [SwaggerResponse(204, "No se encontró el empleado.")]

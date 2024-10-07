@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.Services;
 using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharpTest.Controllers.v1.Rooms;
 
@@ -27,6 +28,7 @@ public class RoomDeleteController : RoomController
     /// <response code="200">Eliminación exitosa de la habitación.</response>
     /// <response code="400">La habitación no existe.</response>
     [HttpDelete("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Elimina una habitación", Description = "Elimina una habitación existente utilizando su ID.")]
     [SwaggerResponse(200, "Eliminación exitosa de la habitación.")]
     [SwaggerResponse(400, "La habitación no existe.")]

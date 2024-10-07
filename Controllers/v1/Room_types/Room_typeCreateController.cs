@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.DTOs.Requests;
 using CSharpTest.Models;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Room_types;
 
@@ -28,6 +29,7 @@ public class Room_typeCreateController : Room_typeController
     /// <response code="200">Tipo de habitación creado exitosamente.</response>
     /// <response code="400">Si el modelo es inválido o nulo.</response>
     [HttpPost]
+    [Authorize]
     [SwaggerOperation(Summary = "Crea un nuevo tipo de habitación", Description = "Permite crear un nuevo tipo de habitación.")]
     [SwaggerResponse(200, "Tipo de habitación creado exitosamente.", typeof(Room_type))]
     [SwaggerResponse(400, "El modelo es inválido o nulo.")]

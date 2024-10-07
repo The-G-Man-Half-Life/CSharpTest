@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CSharpTest.Services;
-using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Room_types;
 
@@ -27,6 +28,7 @@ public class Room_typeDeleteController : Room_typeController
     /// <response code="200">Tipo de habitación eliminado exitosamente.</response>
     /// <response code="404">Si el tipo de habitación no existe.</response>
     [HttpDelete("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Elimina un tipo de habitación", Description = "Permite eliminar un tipo de habitación por su ID.")]
     [SwaggerResponse(200, "Tipo de habitación eliminado exitosamente.")]
     [SwaggerResponse(404, "Tipo de habitación no encontrado.")]

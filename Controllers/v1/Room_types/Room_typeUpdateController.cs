@@ -5,6 +5,7 @@ using CSharpTest.Models;
 using CSharpTest.Services;
 using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharpTest.Controllers.v1.Room_types;
 
@@ -32,6 +33,7 @@ public class Room_typeUpdateController : Room_typeController
     /// <response code="400">Modelo inválido o vacío.</response>
     /// <response code="500">Error en el servidor al procesar la solicitud.</response>
     [HttpPut("{id}")]
+    [Authorize]
     [SwaggerOperation(Summary = "Actualiza un tipo de habitación existente", Description = "Actualiza los detalles de un tipo de habitación específico.")]
     [SwaggerResponse(200, "Actualización exitosa.", typeof(Room_type))]
     [SwaggerResponse(204, "Tipo de habitación no encontrado.")]

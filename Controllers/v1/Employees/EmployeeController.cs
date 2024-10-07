@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSharpTest.Repositories.Interfaces;
 using CSharpTest.Services;
 using CSharpTest.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharpTest.Controllers.v1.Employees;
 

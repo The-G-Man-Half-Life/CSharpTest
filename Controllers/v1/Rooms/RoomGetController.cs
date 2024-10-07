@@ -4,7 +4,8 @@ using CSharpTest.Models;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.VisualBasic; // Asegúrate de tener esta referencia
+using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Authorization; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Rooms
 {
@@ -28,6 +29,7 @@ namespace CSharpTest.Controllers.v1.Rooms
         /// <response code="200">Operación exitosa.</response>
         /// <response code="500">Error interno del servidor.</response>
         [HttpGet]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene todas las habitaciones", Description = "Devuelve una lista de todas las habitaciones disponibles.")]
         [SwaggerResponse(200, "Operación exitosa.")]
         [SwaggerResponse(500, "Error interno del servidor.")]
@@ -53,6 +55,7 @@ namespace CSharpTest.Controllers.v1.Rooms
         /// <response code="404">La habitación no fue encontrada.</response>
         /// <response code="500">Error interno del servidor.</response>
         [HttpGet("{id}")]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene una habitación por su ID", Description = "Devuelve los detalles de una habitación específica.")]
         [SwaggerResponse(200, "Operación exitosa.")]
         [SwaggerResponse(404, "La habitación no fue encontrada.")]
@@ -135,6 +138,7 @@ namespace CSharpTest.Controllers.v1.Rooms
         /// <response code="200">Operación exitosa.</response>
         /// <response code="500">Error interno del servidor.</response>
         [HttpGet("/OccupiedRooms")]
+        [Authorize]
         [SwaggerOperation(Summary = "Obtiene una cuenta de todas las habitaciones ocupadas", Description = "Devuelve una lista con las habitaciones ocupadas")]
         [SwaggerResponse(200, "Operación exitosa.")]
         [SwaggerResponse(500, "Error interno del servidor.")]

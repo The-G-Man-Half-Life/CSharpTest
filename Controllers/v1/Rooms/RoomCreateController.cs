@@ -4,6 +4,7 @@ using CSharpTest.Models;
 using CSharpTest.Services;
 using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharpTest.Controllers.v1.Rooms;
 
@@ -28,6 +29,7 @@ public class RoomCreateController : RoomController
     /// <response code="200">Creación exitosa de la habitación.</response>
     /// <response code="400">Modelo inválido o nulo.</response>
     [HttpPost]
+    [Authorize]
     [SwaggerOperation(Summary = "Crea una nueva habitación", Description = "Crea una habitación con los detalles proporcionados.")]
     [SwaggerResponse(200, "Creación exitosa de la habitación.", typeof(Room))]
     [SwaggerResponse(400, "Modelo inválido o nulo.")]
