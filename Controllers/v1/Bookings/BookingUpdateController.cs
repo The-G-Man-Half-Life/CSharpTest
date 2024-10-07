@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CSharpTest.DTOs.Requests;
 using CSharpTest.Models;
 using CSharpTest.Services;
+using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Bookings
 {
@@ -22,7 +23,20 @@ namespace CSharpTest.Controllers.v1.Bookings
             this.RoomServices = roomServices;
         }
 
+        /// <summary>
+        /// Actualiza una reserva existente.
+        /// </summary>
+        /// <param name="id">El ID de la reserva a actualizar.</param>
+        /// <param name="bookingDTO">El DTO de la reserva con los nuevos datos.</param>
+        /// <returns>Un mensaje de éxito o error.</returns>
+        /// <response code="200">Reserva actualizada exitosamente.</response>
+        /// <response code="400">Si el modelo no es válido o hay problemas con las fechas.</response>
+        /// <response code="404">Si la reserva no existe.</response>
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Actualiza una reserva existente", Description = "Permite actualizar una reserva por su ID.")]
+        [SwaggerResponse(200, "Reserva actualizada exitosamente.")]
+        [SwaggerResponse(400, "El modelo debe ser válido o hay problemas con las fechas.")]
+        [SwaggerResponse(404, "No se encontró ninguna reserva con ese ID.")]
         public async Task<ActionResult> UpdateBooking([FromRoute] int id, [FromBody] BookingDTO bookingDTO)
         {
             if (!await BookingServices.CheckExistence(id))

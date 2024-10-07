@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using CSharpTest.DTOs.Requests;
+using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Rooms
 {
     [ApiController]
     [Route("api/v1/Rooms/[controller]")]
-    [ApiExplorerSettings(GroupName ="v1")]
+    [ApiExplorerSettings(GroupName = "v1")]
     [Tags("Rooms")]
     public class RoomGetController : RoomController
     {
@@ -19,7 +20,16 @@ namespace CSharpTest.Controllers.v1.Rooms
             this.RoomServices = RoomServices;
         }
 
+        /// <summary>
+        /// Obtiene todas las habitaciones.
+        /// </summary>
+        /// <returns>Lista de habitaciones.</returns>
+        /// <response code="200">Operación exitosa.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpGet]
+        [SwaggerOperation(Summary = "Obtiene todas las habitaciones", Description = "Devuelve una lista de todas las habitaciones disponibles.")]
+        [SwaggerResponse(200, "Operación exitosa.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
         public async Task<ActionResult<IEnumerable<Room>>> GetAll()
         {
             try
@@ -33,7 +43,19 @@ namespace CSharpTest.Controllers.v1.Rooms
             }
         }
 
+        /// <summary>
+        /// Obtiene una habitación por su ID.
+        /// </summary>
+        /// <param name="id">ID de la habitación a buscar.</param>
+        /// <returns>Detalles de la habitación.</returns>
+        /// <response code="200">Operación exitosa.</response>
+        /// <response code="404">La habitación no fue encontrada.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Obtiene una habitación por su ID", Description = "Devuelve los detalles de una habitación específica.")]
+        [SwaggerResponse(200, "Operación exitosa.")]
+        [SwaggerResponse(404, "La habitación no fue encontrada.")]
+        [SwaggerResponse(500, "Error interno del servidor.")]
         public async Task<ActionResult<RoomDTO>> GetRoomById([FromRoute]int id)
         {
             if (await RoomServices.CheckExistence(id) == false)

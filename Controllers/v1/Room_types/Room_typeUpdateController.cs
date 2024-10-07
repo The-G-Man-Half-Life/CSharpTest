@@ -3,36 +3,51 @@ using Microsoft.EntityFrameworkCore;
 using CSharpTest.DTOs.Requests;
 using CSharpTest.Models;
 using CSharpTest.Services;
+using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
+using System.Threading.Tasks;
 
 namespace CSharpTest.Controllers.v1.Room_types;
 
 [ApiController]
 [Route("api/v1/Room_types/[controller]")]
 [ApiExplorerSettings(GroupName = "v1")]
-[Tags ("Room_types")]
+[Tags("Room_types")]
 public class Room_typeUpdateController : Room_typeController
 {
     public readonly Room_typeServices Room_typeServices;
 
-    public Room_typeUpdateController(Room_typeServices Room_typeServices): base(Room_typeServices)
+    public Room_typeUpdateController(Room_typeServices Room_typeServices) : base(Room_typeServices)
     {
         this.Room_typeServices = Room_typeServices;
     }
 
+    /// <summary>
+    /// Actualiza un tipo de habitación existente.
+    /// </summary>
+    /// <param name="id">El ID del tipo de habitación a actualizar.</param>
+    /// <param name="Room_typeDTO">El modelo con los nuevos datos.</param>
+    /// <returns>Resultado de la operación de actualización.</returns>
+    /// <response code="200">Actualización exitosa.</response>
+    /// <response code="204">Tipo de habitación no encontrado.</response>
+    /// <response code="400">Modelo inválido o vacío.</response>
+    /// <response code="500">Error en el servidor al procesar la solicitud.</response>
     [HttpPut("{id}")]
-
-
+    [SwaggerOperation(Summary = "Actualiza un tipo de habitación existente", Description = "Actualiza los detalles de un tipo de habitación específico.")]
+    [SwaggerResponse(200, "Actualización exitosa.", typeof(Room_type))]
+    [SwaggerResponse(204, "Tipo de habitación no encontrado.")]
+    [SwaggerResponse(400, "Modelo inválido o vacío.")]
+    [SwaggerResponse(500, "Error en el servidor al procesar la solicitud.")]
     public async Task<ActionResult> UpdateARoom_type([FromRoute] int id, [FromBody] Room_typeDTO Room_typeDTO)
     {
-        if(ModelState.IsValid == false)
+        if (ModelState.IsValid == false)
         {
             return NoContent();
         }
-        else if(ModelState == null)
+        else if (Room_typeDTO == null)
         {
-            return BadRequest("No puede hacer un modelo vacio");
+            return BadRequest("No puede hacer un modelo vacío");
         }
-        else if(await Room_typeServices.CheckExistence(id) == false)
+        else if (await Room_typeServices.CheckExistence(id) == false)
         {
             return NoContent();
         }
@@ -50,7 +65,7 @@ public class Room_typeUpdateController : Room_typeController
             }
             catch (DbUpdateException dbEX)
             {
-                throw new DbUpdateException("Un error ocurrio durante el proceso",dbEX);
+                throw new DbUpdateException("Un error ocurrió durante el proceso", dbEX);
             }
         }
     }

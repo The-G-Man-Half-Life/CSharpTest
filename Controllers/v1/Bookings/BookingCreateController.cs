@@ -3,6 +3,7 @@ using CSharpTest.DTOs.Requests;
 using CSharpTest.Models;
 using CSharpTest.Services;
 using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Annotations; // Asegúrate de tener esta referencia
 
 namespace CSharpTest.Controllers.v1.Bookings
 {
@@ -15,14 +16,23 @@ namespace CSharpTest.Controllers.v1.Bookings
         private readonly BookingServices BookingServices;
         private readonly RoomServices RoomServices;
 
-
         public BookingCreateController(BookingServices bookingServices, RoomServices roomServices) : base(bookingServices)
         {
             this.BookingServices = bookingServices;
-            this.RoomServices =roomServices;
+            this.RoomServices = roomServices;
         }
 
+        /// <summary>
+        /// Crea una nueva reserva.
+        /// </summary>
+        /// <param name="bookingDTO">El DTO de la reserva que contiene los datos necesarios.</param>
+        /// <returns>Devuelve la nueva reserva creada.</returns>
+        /// <response code="200">Devuelve la reserva creada.</response>
+        /// <response code="400">Si el modelo es nulo o inválido.</response>
         [HttpPost]
+        [SwaggerOperation(Summary = "Crea una nueva reserva", Description = "Permite al usuario crear una nueva reserva.")]
+        [SwaggerResponse(200, "Reserva creada exitosamente", typeof(Booking))]
+        [SwaggerResponse(400, "El modelo no puede ser nulo o es inválido.")]
         public async Task<IActionResult> CreateNewBooking([FromBody] BookingDTO bookingDTO)
         {
             if (bookingDTO == null)
@@ -35,12 +45,12 @@ namespace CSharpTest.Controllers.v1.Bookings
                 return BadRequest("El modelo es inválido.");
             }
 
-            var roomfound =await BookingServices.GetAll();
-            var room =roomfound.Count()+1;
+            var roomfound = await BookingServices.GetAll();
+            var room = roomfound.Count() + 1;
 
             int daysDifference = (int)(bookingDTO.Booking_end_date - bookingDTO.Booking_start_date).TotalDays;
             double value = 0;
-            if(room == 1)
+            if (room == 1)
             {
                 value = daysDifference * 50;
             }
@@ -56,7 +66,6 @@ namespace CSharpTest.Controllers.v1.Bookings
             {
                 value = daysDifference * 200;
             }
-            
 
             var newBooking = new Booking(
                 bookingDTO.Booking_start_date,
@@ -70,7 +79,5 @@ namespace CSharpTest.Controllers.v1.Bookings
             await BookingServices.Add(newBooking);
             return Ok(newBooking);
         }
-
-
     }
 }
