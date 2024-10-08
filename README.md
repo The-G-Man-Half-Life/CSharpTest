@@ -5,7 +5,7 @@ DB_DATABASE =bggcejvnjxbs5npwdhnm
 DB_UID =uutphbaar2tcbqad
 DB_PASSWORD =vlgDqIriW3WqMyeUf8iF
 
-JWT_KEY = tank3pro1234567890
+JWT_KEY = tank3pro123456789012345678901234567890
 JWT_ISSUER = http://localhost:5151
 JWT_AUDIENCE = public 
 JWT_EXPIRES_IN = 11
