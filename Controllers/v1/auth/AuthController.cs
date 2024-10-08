@@ -85,8 +85,6 @@ public class AuthController : ControllerBase
             {
                 return Unauthorized("Contraseña invalida");
             }
-
-            //Aqui llamamos el metodo para crear el jwt
             var token = Utilities.GenerateJWtToken(EmployeeFound);
 
             return Ok(token);

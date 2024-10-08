@@ -46,7 +46,8 @@ public class Utilities
             issuer: JWT_ISSUER,
             audience: JWT_AUDIENCE,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(JWT_EXPIRES_IN))
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(JWT_EXPIRES_IN)),
+            signingCredentials: credentials
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
